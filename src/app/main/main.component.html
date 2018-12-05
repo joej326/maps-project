@@ -1,0 +1,17 @@
+<h1>main</h1>
+
+<input
+  #locationSearchElem
+  (keyup.enter)="fetchNewLocationData(locationSearchElem, true)"
+  (blur)="fetchNewLocationData(locationSearchElem)"
+  placeholder="Enter your location"
+  class="my-input"
+  type="text">
+<div #mainMap class="main-map"></div>
+
+<div *ngFor="let location of locationResultsData; let i = index" class="location">
+  <h1>Name: {{ location.name }}</h1>
+  <h3>Rating: {{ location.rating }}</h3>
+  <h5>{{ location.formatted_address }}</h5>
+  <img [src]="locationPhotoUrlsAndIds[location.id]" alt="location image">
+</div>
