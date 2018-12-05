@@ -23,8 +23,10 @@ export class MainComponent implements OnInit, AfterContentInit {
   service;
   locationResultsData = [];
   locationPhotoUrlsAndIds = {};
+  openHours = [];
 
   callbackForLocationData = (results, status) => {
+    console.log('results:', results);
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       this.locationResultsData = [...results];
       console.log('a result:', results[0]);
@@ -33,9 +35,10 @@ export class MainComponent implements OnInit, AfterContentInit {
         if (results[i].photos) {
           this.locationPhotoUrlsAndIds[results[i].id] = results[i].photos[0].getUrl();
         }
+        const placeId = results[i].placeId;
       }
     } else {
-      alert('There was an error processing your request. :(');
+      alert(`There was an error processing your request: ${status}`);
     }
   }
 
@@ -83,21 +86,29 @@ export class MainComponent implements OnInit, AfterContentInit {
                 }
               );
 
-              const request = {
+              const placeRequest = {
                 location: locationCenter,
                 radius: '500',
                 query: 'coffee'
               };
 
+              const detailsRequest = {
+                placeId: 'ChIJEanCMFWXTYcRSgLXoNooVW8',
+                fields: ['name', 'rating', 'price_level', 'website', 'opening_hours']
+              };
+
               this.service = new google.maps.places.PlacesService(this.map);
               const locationData = this.service.textSearch(
-                request,
+                placeRequest,
                 this.callbackForLocationData
               );
             } else if (!data['results'].length) {
-              alert('Not a valid search');
+              alert('Not a valid search, no data found.');
             }
-          });
+          },
+          () => {},
+          () => console.log('completed')
+          );
       }
     }
   }
