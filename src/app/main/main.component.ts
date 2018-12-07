@@ -37,6 +37,7 @@ export class MainComponent implements OnInit, AfterContentInit {
         }
         const placeId = results[i].placeId;
       }
+      this.getDetailsOfPlaces(results);
     } else {
       alert(`There was an error processing your request: ${status}`);
     }
@@ -106,10 +107,43 @@ export class MainComponent implements OnInit, AfterContentInit {
               alert('Not a valid search, no data found.');
             }
           },
-          () => {},
-          () => console.log('completed')
           );
       }
     }
+  }
+
+  getDetailsOfPlaces(placesResults) {
+    const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+    const currentDayOfTheWeek = daysOfTheWeek[new Date().getDay()];
+    const filteredPlacesByLateHours = [];
+
+    const callback = (place, status) => {
+      if (status === google.maps.places.PlacesServiceStatus.OK) {
+        console.log('place:', place);
+        const daysHours = place.opening_hours.weekday_text.filter((day: string) => day.startsWith(currentDayOfTheWeek));
+        console.log('days hours:', daysHours);
+        const regexString = daysHours[0];
+
+        // in case of matching the opening time as well, make sure you have only the closing time
+        const matchedClosingTime = regexString.match(/(([1]?[78901]:\d\d ?PM)|(([12345]:\d\d ?AM)))$/g);
+
+        console.log('closing time:', matchedClosingTime);
+        if (matchedClosingTime) {
+          filteredPlacesByLateHours.push(place);
+        }
+      }
+      console.log('filtered array:' , filteredPlacesByLateHours);
+    };
+    placesResults.map(
+      (location) => {
+        const placeId = location.place_id;
+
+        const detailsRequest = {
+          placeId,
+          fields: ['name', 'rating', 'price_level', 'website', 'opening_hours']
+        };
+        this.service.getDetails(detailsRequest, callback);
+      }
+    );
   }
 }
