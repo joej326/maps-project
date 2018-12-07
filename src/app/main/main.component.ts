@@ -5,7 +5,6 @@ import {
   ViewChild,
   ElementRef,
   AfterContentInit,
-  DoCheck,
   Renderer2
 } from '@angular/core';
 import { RetrievePlaceDetailsService } from '../retrieve-place-details.service';
@@ -19,7 +18,7 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   @ViewChild('locationSearchElem') locationSearchElem: ElementRef;
   @ViewChild('mainMap') mainMap: ElementRef;
-  map;
+  googleMap: google.maps.Map;
   service;
   locationResultsData = [];
   locationPhotoUrlsAndIds = {};
@@ -51,6 +50,7 @@ export class MainComponent implements OnInit, AfterContentInit {
   ngOnInit() {}
 
   ngAfterContentInit() {
+
     const initialize = (map) => {
       const myInput = <HTMLInputElement> this.locationSearchElem.nativeElement;
       const pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
@@ -60,16 +60,18 @@ export class MainComponent implements OnInit, AfterContentInit {
         center: pyrmont,
         zoom: 15
       });
+      this.googleMap = map;
     };
-    initialize(this.map);
+    initialize(this.googleMap);
   }
 
 
   fetchNewLocationData(inputElem, enterPressed?) {
+
+    // ensures only one search is performed
     if (enterPressed) {
       inputElem.blur();
     } else {
-
       const address = inputElem.value;
       if (address) {
         const placeData = this.retrievePlaceDetailsService
@@ -79,7 +81,7 @@ export class MainComponent implements OnInit, AfterContentInit {
               const lat = data['results'][0].geometry.location.lat;
               const lng = data['results'][0].geometry.location.lng;
               const locationCenter = new google.maps.LatLng(lat, lng);
-              this.map = new google.maps.Map(
+              this.googleMap = new google.maps.Map(
                 this.mainMap.nativeElement,
                 {
                   center: locationCenter,
@@ -98,7 +100,7 @@ export class MainComponent implements OnInit, AfterContentInit {
                 fields: ['name', 'rating', 'price_level', 'website', 'opening_hours']
               };
 
-              this.service = new google.maps.places.PlacesService(this.map);
+              this.service = new google.maps.places.PlacesService(this.googleMap);
               const locationData = this.service.textSearch(
                 placeRequest,
                 this.callbackForLocationData
@@ -133,6 +135,17 @@ export class MainComponent implements OnInit, AfterContentInit {
         }
       }
       console.log('filtered array:' , filteredPlacesByLateHours);
+
+      if (place) {
+        const marker = new google.maps.Marker({
+          map: this.googleMap,
+          position: place.geometry.location,
+          place: {
+            placeId: place.place_id,
+            location: place.geometry.location
+          }
+        });
+      }
     };
     placesResults.map(
       (location) => {
@@ -140,7 +153,7 @@ export class MainComponent implements OnInit, AfterContentInit {
 
         const detailsRequest = {
           placeId,
-          fields: ['name', 'rating', 'price_level', 'website', 'opening_hours']
+          fields: ['name', 'rating', 'price_level', 'website', 'opening_hours', 'place_id', 'geometry']
         };
         this.service.getDetails(detailsRequest, callback);
       }
