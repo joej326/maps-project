@@ -1,5 +1,6 @@
-<app-main></app-main>
+<app-main [titleScreenElem]="titleScreenElem" *ngIf="!titleScreen"></app-main>
 
+<app-title-screen (notifySearchEmitter)="leaveTitleScreen($event)" *ngIf="titleScreen"></app-title-screen>
 
 <div class="background-div"></div>
 <!-- <h1 style="color: white">awdadwadad</h1> -->

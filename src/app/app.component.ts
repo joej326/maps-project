@@ -7,4 +7,13 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'maps-project';
+  titleScreen = true;
+
+  titleScreenElem;
+
+
+  leaveTitleScreen(event) {
+    this.titleScreen = false;
+    this.titleScreenElem = event;
+  }
 }

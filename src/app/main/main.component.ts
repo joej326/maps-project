@@ -5,7 +5,8 @@ import {
   ViewChild,
   ElementRef,
   AfterContentInit,
-  Renderer2
+  Renderer2,
+  Input
 } from '@angular/core';
 import { RetrievePlaceDetailsService } from '../retrieve-place-details.service';
 
@@ -15,6 +16,7 @@ import { RetrievePlaceDetailsService } from '../retrieve-place-details.service';
   styleUrls: ['./main.component.scss']
 })
 export class MainComponent implements OnInit, AfterContentInit {
+  @Input() titleScreenElem;
 
   @ViewChild('locationSearchElem') locationSearchElem: ElementRef;
   @ViewChild('mainMap') mainMap: ElementRef;
@@ -53,18 +55,19 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   ngAfterContentInit() {
 
-    const initialize = (map) => {
-      const myInput = <HTMLInputElement> this.locationSearchElem.nativeElement;
-      const pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
-      const mySearch = new google.maps.places.SearchBox(myInput);
+    // const initialize = (map) => {
+    //   const myInput = <HTMLInputElement> this.titleScreenElem.nativeElement;
+    //   const pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
+    //   const mySearch = new google.maps.places.SearchBox(myInput);
 
-      map = new google.maps.Map(this.mainMap.nativeElement, {
-        center: pyrmont,
-        zoom: 15
-      });
-      this.googleMap = map;
-    };
-    initialize(this.googleMap);
+    //   map = new google.maps.Map(this.mainMap.nativeElement, {
+    //     center: pyrmont,
+    //     zoom: 15
+    //   });
+    //   this.googleMap = map;
+    // };
+    // initialize(this.googleMap);
+    this.fetchNewLocationData(this.titleScreenElem);
   }
 
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-title-screen',
@@ -7,9 +7,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TitleScreenComponent implements OnInit {
 
+  @Output() notifySearchEmitter = new EventEmitter();
+
   constructor() { }
 
   ngOnInit() {
+  }
+
+  notifySearch(inputElem) {
+    this.notifySearchEmitter.emit(inputElem);
   }
 
 }
