@@ -10,9 +10,12 @@
 
 <div #mainMap class="main-map"></div>
 
-<div *ngFor="let location of locationResultsData; let i = index" class="location">
+<div *ngFor="let location of filteredPlacesByLateHours; let i = index" class="location">
   <h1>Name: {{ location.name }}</h1>
   <h3>Rating: {{ location.rating }}</h3>
   <h5>{{ location.formatted_address }}</h5>
+  <h5>Hours: </h5>
+  <h6 *ngFor="let daysHours of location.opening_hours.weekday_text">{{ daysHours }}</h6>
+  <h5>Website: <a target="_blank" href="{{ location.website }}">{{ location.website }}</a></h5>
   <img [src]="locationPhotoUrlsAndIds[location.id]" alt="location image">
 </div>

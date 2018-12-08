@@ -23,9 +23,11 @@ export class MainComponent implements OnInit, AfterContentInit {
   locationResultsData = [];
   locationPhotoUrlsAndIds = {};
   openHours = [];
+  filteredPlacesByLateHours = [];
 
   callbackForLocationData = (results, status) => {
     console.log('results:', results);
+    console.log('hi');
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       this.locationResultsData = [...results];
       console.log('a result:', results[0]);
@@ -92,12 +94,8 @@ export class MainComponent implements OnInit, AfterContentInit {
               const placeRequest = {
                 location: locationCenter,
                 radius: '500',
+                // type: ['cafe', 'bakery'],
                 query: 'coffee'
-              };
-
-              const detailsRequest = {
-                placeId: 'ChIJEanCMFWXTYcRSgLXoNooVW8',
-                fields: ['name', 'rating', 'price_level', 'website', 'opening_hours']
               };
 
               this.service = new google.maps.places.PlacesService(this.googleMap);
@@ -117,35 +115,45 @@ export class MainComponent implements OnInit, AfterContentInit {
   getDetailsOfPlaces(placesResults) {
     const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const currentDayOfTheWeek = daysOfTheWeek[new Date().getDay()];
-    const filteredPlacesByLateHours = [];
+    this.filteredPlacesByLateHours = [];
 
     const callback = (place, status) => {
+      let createMarker = false;
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         console.log('place:', place);
-        const daysHours = place.opening_hours.weekday_text.filter((day: string) => day.startsWith(currentDayOfTheWeek));
-        console.log('days hours:', daysHours);
-        const regexString = daysHours[0];
+        // const weeksHours = <Array<string>> place.opening_hours.weeday_text;
+        // weeksHours.split(',');
+        const todaysHours = <Array<string>> place.opening_hours.weekday_text.filter((day: string) => day.startsWith(currentDayOfTheWeek));
+        console.log('days hours:', todaysHours);
+        const todaysHoursString = todaysHours[0];
 
-        // in case of matching the opening time as well, make sure you have only the closing time
-        const matchedClosingTime = regexString.match(/(([1]?[78901]:\d\d ?PM)|(([12345]:\d\d ?AM)))$/g);
+        let matchedClosingTime = <string | RegExpMatchArray>
+          todaysHoursString.match(/– (([1]?[901]:\d\d ?PM)|(([1]?[12345]:\d\d ?AM)))|(Open 24 hours)$/g);
+        matchedClosingTime = matchedClosingTime ? matchedClosingTime[0] : matchedClosingTime;
+
+        if (matchedClosingTime && matchedClosingTime.includes('hours')) {
+          this.filteredPlacesByLateHours.push(place);
+          createMarker = true;
+        } else if (matchedClosingTime) {
+          matchedClosingTime = matchedClosingTime.slice(2, matchedClosingTime.length);
+          this.filteredPlacesByLateHours.push(place);
+          createMarker = true;
+        }
+
+        if (createMarker) {
+          const marker = new google.maps.Marker({
+            map: this.googleMap,
+            position: place.geometry.location,
+            place: {
+              placeId: place.place_id,
+              location: place.geometry.location
+            }
+          });
+        }
 
         console.log('closing time:', matchedClosingTime);
-        if (matchedClosingTime) {
-          filteredPlacesByLateHours.push(place);
-        }
       }
-      console.log('filtered array:' , filteredPlacesByLateHours);
-
-      if (place) {
-        const marker = new google.maps.Marker({
-          map: this.googleMap,
-          position: place.geometry.location,
-          place: {
-            placeId: place.place_id,
-            location: place.geometry.location
-          }
-        });
-      }
+      console.log('filtered array:' , this.filteredPlacesByLateHours);
     };
     placesResults.map(
       (location) => {
@@ -153,7 +161,7 @@ export class MainComponent implements OnInit, AfterContentInit {
 
         const detailsRequest = {
           placeId,
-          fields: ['name', 'rating', 'price_level', 'website', 'opening_hours', 'place_id', 'geometry']
+          fields: ['name', 'rating', 'price_level', 'website', 'opening_hours', 'place_id', 'geometry', 'id', 'formatted_address', 'types']
         };
         this.service.getDetails(detailsRequest, callback);
       }
