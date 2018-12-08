@@ -1,9 +1,54 @@
 
+.title {
+  background-size: contain;
+  background-repeat: no-repeat;
+  background-position-y: center;
+  transform: translateX(-50%);
+  position: relative;
+  left: 50%;
+}
+.late-night {
+  width: 50vw;
+  height: 10vw;
+  background-image: url('./../../assets/images/late-night2.png');
+}
+.lounge-locator {
+  width: 70vw;
+  height: 10vw;
+  background-image: url('./../../assets/images/lounge-locator2.png');
+}
+
 .main-map {
   width: 100%;
   height: 20vw;
 }
 
-img {
-  width: 20vw;
+.results-container {
+  display: flex;
+  justify-content: space-around;
+  // flex-wrap: wrap;
+
+  & .location {
+
+
+    &-name {
+      font-size: 3vw;
+    }
+    &-rating {
+      font-size: 3vw;
+    }
+    &-address {
+      font-size: 3vw;
+    }
+    &-hours {
+      font-size: 3vw;
+    }
+    &-website {
+      font-size: 3vw;
+    }
+    &-image {
+      width: 20vw;
+    }
+  }
 }
+

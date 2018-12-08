@@ -1,1 +1,22 @@
-/* You can add global styles to this file, and also import other style files */
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+*::before, *::after {
+      margin: 0;
+      padding: 0;
+      box-sizing: inherit;
+}
+
+  html {
+    background-color: black;
+    font-size: 0.7vw;
+    font-family: 'Lora', serif;
+}
+
+  body {
+    box-sizing: border-box;
+}

@@ -1,0 +1,12 @@
+
+
+.background-div {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: -100;
+  width: 100vw;
+  height: 100vh;
+  background-image: url('/assets/images/city-night-min.jpg');
+  background-size: cover;
+}

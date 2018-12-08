@@ -1,4 +1,5 @@
-<h1>main</h1>
+<div class="late-night title"></div>
+<div class="lounge-locator title"></div>
 
 <input
   #locationSearchElem
@@ -10,12 +11,16 @@
 
 <div #mainMap class="main-map"></div>
 
-<div *ngFor="let location of filteredPlacesByLateHours; let i = index" class="location">
-  <h1>Name: {{ location.name }}</h1>
-  <h3>Rating: {{ location.rating }}</h3>
-  <h5>{{ location.formatted_address }}</h5>
-  <h5>Hours: </h5>
-  <h6 *ngFor="let daysHours of location.opening_hours.weekday_text">{{ daysHours }}</h6>
-  <h5>Website: <a target="_blank" href="{{ location.website }}">{{ location.website }}</a></h5>
-  <img [src]="locationPhotoUrlsAndIds[location.id]" alt="location image">
+<div class="results-container">
+  <div *ngFor="let location of filteredPlacesByLateHours; let i = index" class="location">
+    <p class="location-name">Name: {{ location.name }}</p>
+    <p class="location-rating">Rating: {{ location.rating }}</p>
+    <p class="location-address">{{ location.formatted_address }}</p>
+    <p class="location-hours">Hours: </p>
+    <p *ngFor="let daysHours of location.opening_hours.weekday_text">{{ daysHours }}</p>
+    <p class="location-website">Website: <a target="_blank" href="{{ location.website }}">{{ location.website }}</a></p>
+    <img class="location-image" [src]="locationPhotoUrlsAndIds[location.id]" alt="location image">
+  </div>
 </div>
+
+
