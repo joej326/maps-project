@@ -29,9 +29,8 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   callbackForLocationData = (results, status) => {
     console.log('results:', results);
-    console.log('hi');
     if (status === google.maps.places.PlacesServiceStatus.OK) {
-      this.locationResultsData = [...results];
+      this.locationResultsData = this.locationResultsData.concat(results);
       console.log('a result:', results[0]);
 
       for (let i = 0; i < results.length; i++) {
@@ -72,6 +71,7 @@ export class MainComponent implements OnInit, AfterContentInit {
 
 
   fetchNewLocationData(inputElem, enterPressed?) {
+    this.filteredPlacesByLateHours = [];
 
     // ensures only one search is performed
     if (enterPressed) {
@@ -94,18 +94,26 @@ export class MainComponent implements OnInit, AfterContentInit {
                 }
               );
 
-              const placeRequest = {
-                location: locationCenter,
-                radius: '500',
-                // type: ['cafe', 'bakery'],
-                query: 'coffee'
-              };
+              // made into array to map through - potentially to utilize multiple query searches
+              const queriesForLocation = ['lounge'];
 
-              this.service = new google.maps.places.PlacesService(this.googleMap);
-              const locationData = this.service.textSearch(
-                placeRequest,
-                this.callbackForLocationData
+              queriesForLocation.map(
+                (query) => {
+                  const placeRequest = {
+                    location: locationCenter,
+                    radius: '800',
+                    // type: ['cafe'],
+                    query: query
+                  };
+
+                  this.service = new google.maps.places.PlacesService(this.googleMap);
+                  const locationData = this.service.textSearch(
+                    placeRequest,
+                    this.callbackForLocationData
+                  );
+                }
               );
+
             } else if (!data['results'].length) {
               alert('Not a valid search, no data found.');
             }
@@ -117,18 +125,24 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   getDetailsOfPlaces(placesResults) {
     const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    const currentDayOfTheWeek = daysOfTheWeek[new Date().getDay()];
-    this.filteredPlacesByLateHours = [];
+    // const currentDayOfTheWeek = daysOfTheWeek[new Date().getDay()];
+    const currentDayOfTheWeek = 'Monday';
+    // this.filteredPlacesByLateHours = [];
 
     const callback = (place, status) => {
       let createMarker = false;
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         console.log('place:', place);
+        console.log('all data', this.locationResultsData);
         // const weeksHours = <Array<string>> place.opening_hours.weeday_text;
         // weeksHours.split(',');
-        const todaysHours = <Array<string>> place.opening_hours.weekday_text.filter((day: string) => day.startsWith(currentDayOfTheWeek));
+        let todaysHours;
+        let todaysHoursString = '';
+        if (place.opening_hours) {
+          todaysHours = <Array<string>> place.opening_hours.weekday_text.filter((day: string) => day.startsWith(currentDayOfTheWeek));
+          todaysHoursString = todaysHours[0];
+        }
         console.log('days hours:', todaysHours);
-        const todaysHoursString = todaysHours[0];
 
         let matchedClosingTime = <string | RegExpMatchArray>
           todaysHoursString.match(/– (([1]?[901]:\d\d ?PM)|(([1]?[12345]:\d\d ?AM)))|(Open 24 hours)$/g);
@@ -158,7 +172,8 @@ export class MainComponent implements OnInit, AfterContentInit {
       }
       console.log('filtered array:' , this.filteredPlacesByLateHours);
     };
-    placesResults.map(
+    console.log('results 2:', placesResults);
+    this.locationResultsData.map(
       (location) => {
         const placeId = location.place_id;
 
@@ -166,7 +181,10 @@ export class MainComponent implements OnInit, AfterContentInit {
           placeId,
           fields: ['name', 'rating', 'price_level', 'website', 'opening_hours', 'place_id', 'geometry', 'id', 'formatted_address', 'types']
         };
+        setTimeout(() => {
         this.service.getDetails(detailsRequest, callback);
+
+        }, 100);
       }
     );
   }

@@ -1,4 +1,9 @@
 
+.map-and-results-container {
+  display: flex;
+  justify-content: space-between;
+}
+
 .search-container {
   display: flex;
   justify-content: center;
@@ -33,39 +38,63 @@
     font-size: 3vw;
     cursor: pointer;
     text-align: center;
+
+    &:hover {
+      background-color: blue;
+    }
   }
 }
 
 .main-map {
-  width: 100%;
-  height: 20vw;
+  width: 50vw;
+  height: 40vw;
 }
 
 .results-container {
-  display: flex;
-  justify-content: space-around;
+  // display: flex;
+  // justify-content: space-around;
   // flex-wrap: wrap;
+  height: 40vw;
+  width: 50vw;
+  border: solid blue 0.25vw;
+  overflow: scroll;
+  position: relative;
 
   & .location {
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: black solid 0.25vw;
 
+    &-text {
+      margin-left: 1vw;
 
-    &-name {
-      font-size: 3vw;
+      &-name {
+        font-size: 1vw;
+      }
+      &-rating {
+        font-size: 1vw;
+      }
+      &-address {
+        font-size: 1vw;
+      }
+      &-hours {
+        font-size: 1vw;
+      }
+      &-website {
+        font-size: 1vw;
+        display: inline-block;
+        text-decoration: underline;
+
+        &:hover {
+          color: rgb(238, 43, 238);
+        }
+      }
     }
-    &-rating {
-      font-size: 3vw;
-    }
-    &-address {
-      font-size: 3vw;
-    }
-    &-hours {
-      font-size: 3vw;
-    }
-    &-website {
-      font-size: 3vw;
-    }
+
     &-image {
-      width: 20vw;
+      width: 10vw;
     }
   }
 }

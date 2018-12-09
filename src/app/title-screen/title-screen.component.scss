@@ -45,4 +45,8 @@
   font-size: 3vw;
   cursor: pointer;
   text-align: center;
+
+  &:hover {
+    background-color: blue;
+  }
 }
