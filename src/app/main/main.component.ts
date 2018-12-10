@@ -29,6 +29,8 @@ export class MainComponent implements OnInit, AfterContentInit {
   alertActive = false;
   query = 'lounge';
   inputElemValue: string;
+  timeout: boolean;
+  timeForMarkerGenerator = 100;
 
   callbackForLocationData = (results, status) => {
     console.log('results:', results);
@@ -36,7 +38,6 @@ export class MainComponent implements OnInit, AfterContentInit {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       // concat the arrays from the multiple queries
       this.locationResultsData = this.locationResultsData.concat(results);
-      console.log('a result:', results[0]);
 
       for (let i = 0; i < this.locationResultsData.length; i++) {
         if (this.locationResultsData[i].photos) {
@@ -45,7 +46,6 @@ export class MainComponent implements OnInit, AfterContentInit {
         }
         const placeId = this.locationResultsData[i].placeId;
       }
-      console.log('before getDetails of placeas', this.locationResultsData);
       this.getDetailsOfPlaces(this.locationResultsData);
     } else {
       this.alertActive = true;
@@ -66,7 +66,7 @@ export class MainComponent implements OnInit, AfterContentInit {
 
 
   fetchNewLocationData(inputElem, enterPressed?, query?: string) {
-    console.log('fetchenewdatalocaiton called');
+    this.timeForMarkerGenerator = 100;
     this.alertActive = false;
     this.filteredPlacesByLateHours = [];
     this.locationResultsData = [];
@@ -81,6 +81,7 @@ export class MainComponent implements OnInit, AfterContentInit {
         const placeData = this.retrievePlaceDetailsService
           .getPlaceDetails(address)
           .subscribe(data => {
+            this.timeout = false;
             if (data['results'].length) {
               const lat = data['results'][0].geometry.location.lat;
               const lng = data['results'][0].geometry.location.lng;
@@ -89,7 +90,7 @@ export class MainComponent implements OnInit, AfterContentInit {
                 this.mainMap.nativeElement,
                 {
                   center: locationCenter,
-                  zoom: 15
+                  zoom: 10
                 }
               );
 
@@ -98,7 +99,7 @@ export class MainComponent implements OnInit, AfterContentInit {
 
               const placeRequest = {
                 location: locationCenter,
-                radius: '800',
+                radius: '500',
                 // type: ['cafe'],
                 query: queryForLocation
               };
@@ -121,6 +122,12 @@ export class MainComponent implements OnInit, AfterContentInit {
             setTimeout(() => {
               this.mainMap.nativeElement.click();
             }, 2000);
+
+            setTimeout(() => {
+              if (!this.filteredPlacesByLateHours.length) {
+                this.timeout = true;
+              }
+            }, 10000);
           }
           );
       }
@@ -133,18 +140,14 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
   getDetailsOfPlaces(locationResultsData) {
-    console.log('getDetailsOfPlaces');
     const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     const currentDayOfTheWeek = daysOfTheWeek[new Date().getDay()];
     // const currentDayOfTheWeek = 'Friday';
     // this.filteredPlacesByLateHours = [];
 
     const callback = (place, status) => {
-      console.log('callback');
       let createMarker = false;
       if (status === google.maps.places.PlacesServiceStatus.OK) {
-        console.log('place:', place);
-        console.log('all data', this.locationResultsData);
         // const weeksHours = <Array<string>> place.opening_hours.weeday_text;
         // weeksHours.split(',');
         let todaysHours;
@@ -153,7 +156,6 @@ export class MainComponent implements OnInit, AfterContentInit {
           todaysHours = <Array<string>> place.opening_hours.weekday_text.filter((day: string) => day.startsWith(currentDayOfTheWeek));
           todaysHoursString = todaysHours[0];
         }
-        console.log('days hours:', todaysHours);
 
         let matchedClosingTime = <string | RegExpMatchArray>
           todaysHoursString.match(/– (([1]?[901]:\d\d ?PM)|(([1]?[12345]:\d\d ?AM)))|(Open 24 hours)$/g);
@@ -169,25 +171,29 @@ export class MainComponent implements OnInit, AfterContentInit {
         }
 
         if (createMarker) {
-          const marker = new google.maps.Marker({
-            map: this.googleMap,
-            position: place.geometry.location,
-            place: {
-              placeId: place.place_id,
-              location: place.geometry.location
-            }
-          });
+          const time = 100;
+          const markerTimeout =
+            setTimeout(() => {
+              const marker = new google.maps.Marker({
+                map: this.googleMap,
+                position: place.geometry.location,
+                place: {
+                  placeId: place.place_id,
+                  location: place.geometry.location,
+                },
+                title: `${place.name} | ${place.formatted_address}`,
+                animation: google.maps.Animation.DROP
+              });
+            }, this.timeForMarkerGenerator += 100);
+
         }
 
-        console.log('closing time:', matchedClosingTime);
       } else {
         console.log(`status: ${status}`);
       }
-      console.log('filtered array:' , this.filteredPlacesByLateHours);
     };
 
 
-    console.log('results 2:', locationResultsData);
     locationResultsData.map(
       (location) => {
         const placeId = location.place_id;

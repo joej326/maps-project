@@ -18,6 +18,8 @@
     <p (click)="setQuery('lounge')" [ngClass]="{'query-active': query === 'lounge'}">Lounge</p>
     <p (click)="setQuery('coffee')" [ngClass]="{'query-active': query === 'coffee'}">Coffee</p>
     <p (click)="setQuery('cafe')" [ngClass]="{'query-active': query === 'cafe'}">Café</p>
+    <p (click)="setQuery('starbucks')" [ngClass]="{'query-active': query === 'starbucks'}">Starbucks</p>
+    <p (click)="setQuery('books')" [ngClass]="{'query-active': query === 'books'}">Books</p>
   </div>
 
 </div>
@@ -27,17 +29,17 @@
 
     <div class="results-container">
       <p
-        *ngIf="!filteredPlacesByLateHours.length && !alertActive"
+        *ngIf="!filteredPlacesByLateHours.length && !alertActive && !timeout"
         class="loading">Loading Results...
       </p>
       <p
-        *ngIf="alertActive"
+        *ngIf="alertActive || timeout"
         class="loading">No Results Found.
       </p>
       <ng-container *ngIf="filteredPlacesByLateHours.length">
           <div class="location" *ngFor="let location of filteredPlacesByLateHours; let i = index" >
               <div class="location-text">
-                  <p class="location-text-name">Name: {{ location.name }}</p>
+                  <p class="location-text-name">{{ location.name }}</p>
                   <p class="location-text-rating">Rating: {{ location.rating }}</p>
                   <p class="location-text-address">{{ location.formatted_address }}</p>
                   <a target="_blank" href="{{ location.website }}">
