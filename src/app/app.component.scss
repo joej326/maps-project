@@ -7,6 +7,6 @@
   z-index: -100;
   width: 100vw;
   height: 100vh;
-  background-image: url('/assets/images/city-night-min.jpg');
+  background: linear-gradient(rgba(black, 0.5), rgba(black, 0.5)), url('/assets/images/city-night-min.jpg');
   background-size: cover;
 }

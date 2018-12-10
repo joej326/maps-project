@@ -20,26 +20,33 @@
     <div #mainMap class="main-map"></div>
 
     <div class="results-container">
-      <div class="location" *ngFor="let location of filteredPlacesByLateHours; let i = index" >
-        <div class="location-text">
-            <p class="location-text-name">Name: {{ location.name }}</p>
-            <p class="location-text-rating">Rating: {{ location.rating }}</p>
-            <p class="location-text-address">{{ location.formatted_address }}</p>
-            <a target="_blank" href="{{ location.website }}">
-              <p class="location-text-website">Visit Website</p>
-            </a>
-            <!-- <p class="location-text-hours">Hours: </p> -->
-            <!-- <p *ngFor="let daysHours of location.opening_hours.weekday_text">{{ daysHours }}</p> -->
-        </div>
-        <div class="location-image">
-            <img
-              class="location-image"
-              [src]="locationPhotoUrlsAndIds[location.id] ?
-                locationPhotoUrlsAndIds[location.id] :
-                './../../assets/images/coffee-icon.png'"
-              alt="location image">
-        </div>
-      </div>
+      <p
+        *ngIf="!filteredPlacesByLateHours.length"
+        class="loading">Loading Results...
+      </p>
+      <ng-container *ngIf="filteredPlacesByLateHours.length">
+          <div class="location" *ngFor="let location of filteredPlacesByLateHours; let i = index" >
+              <div class="location-text">
+                  <p class="location-text-name">Name: {{ location.name }}</p>
+                  <p class="location-text-rating">Rating: {{ location.rating }}</p>
+                  <p class="location-text-address">{{ location.formatted_address }}</p>
+                  <a target="_blank" href="{{ location.website }}">
+                    <p class="location-text-website">Visit Website</p>
+                  </a>
+                  <!-- <p class="location-text-hours">Hours: </p> -->
+                  <!-- <p *ngFor="let daysHours of location.opening_hours.weekday_text">{{ daysHours }}</p> -->
+              </div>
+              <div class="location-image">
+                  <img
+                    class="location-image"
+                    [src]="locationPhotoUrlsAndIds[location.id] ?
+                      locationPhotoUrlsAndIds[location.id] :
+                      './../../assets/images/coffee-icon.png'"
+                    alt="location image">
+              </div>
+            </div>
+      </ng-container>
+
     </div>
 </div>
 

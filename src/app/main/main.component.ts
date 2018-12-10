@@ -53,25 +53,13 @@ export class MainComponent implements OnInit, AfterContentInit {
   ngOnInit() {}
 
   ngAfterContentInit() {
-
-    // const initialize = (map) => {
-    //   const myInput = <HTMLInputElement> this.titleScreenElem.nativeElement;
-    //   const pyrmont = new google.maps.LatLng(-33.8665433, 151.1956316);
-    //   const mySearch = new google.maps.places.SearchBox(myInput);
-
-    //   map = new google.maps.Map(this.mainMap.nativeElement, {
-    //     center: pyrmont,
-    //     zoom: 15
-    //   });
-    //   this.googleMap = map;
-    // };
-    // initialize(this.googleMap);
     this.fetchNewLocationData(this.titleScreenElem);
   }
 
 
   fetchNewLocationData(inputElem, enterPressed?) {
     this.filteredPlacesByLateHours = [];
+    this.locationResultsData = [];
 
     // ensures only one search is performed
     if (enterPressed) {
@@ -95,7 +83,7 @@ export class MainComponent implements OnInit, AfterContentInit {
               );
 
               // made into array to map through - potentially to utilize multiple query searches
-              const queriesForLocation = ['lounge'];
+              const queriesForLocation = ['coffee'];
 
               queriesForLocation.map(
                 (query) => {
@@ -126,7 +114,7 @@ export class MainComponent implements OnInit, AfterContentInit {
   getDetailsOfPlaces(placesResults) {
     const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
     // const currentDayOfTheWeek = daysOfTheWeek[new Date().getDay()];
-    const currentDayOfTheWeek = 'Monday';
+    const currentDayOfTheWeek = 'Friday';
     // this.filteredPlacesByLateHours = [];
 
     const callback = (place, status) => {

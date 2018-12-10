@@ -60,6 +60,11 @@
   overflow: scroll;
   position: relative;
 
+  & .loading {
+    font-size: 2vw;
+    color: white;
+  }
+
   & .location {
     background-color: white;
     display: flex;
