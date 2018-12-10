@@ -42,9 +42,10 @@
                   <p class="location-text-name">{{ location.name }}</p>
                   <p class="location-text-rating">Rating: {{ location.rating }}</p>
                   <p class="location-text-address">{{ location.formatted_address }}</p>
-                  <a target="_blank" href="{{ location.website }}">
+                  <a *ngIf="location.website" target="_blank" href="{{ location.website }}">
                     <p class="location-text-website">Visit Website</p>
                   </a>
+                  <p *ngIf="!location.website" class="location-text-website">No Website Found</p>
                   <!-- <p class="location-text-hours">Hours: </p> -->
                   <!-- <p *ngFor="let daysHours of location.opening_hours.weekday_text">{{ daysHours }}</p> -->
               </div>
