@@ -1,22 +1,89 @@
-
 * {
-    margin: 0;
-    padding: 0;
-    box-sizing: inherit;
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
 
-*::before, *::after {
-      margin: 0;
-      padding: 0;
-      box-sizing: inherit;
+*::before,
+*::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: inherit;
 }
 
-  html {
-    background-color: black;
-    font-size: 0.7vw;
-    font-family: 'Lora', serif;
+html {
+  background-color: black;
+  font-size: 0.7vw;
+  font-family: "Lora", serif;
 }
 
-  body {
-    box-sizing: border-box;
+body {
+  box-sizing: border-box;
+}
+
+@media (max-width: 800px) {
+  .search-container {
+    margin-top: 3vw !important;
+  }
+
+  .lounge-locator {
+    width: 86vw !important;
+  }
+
+  .late-night {
+    width: 60vw !important;
+    margin-top: 30% !important;
+  }
+  .map-and-results-container {
+    display: unset !important;
+    position: relative;
+    transform: translateX(-50%) !important;
+    // left: 25% !important;
+  }
+  .main-map {
+    width: 100vw !important;
+    height: 75vw !important;
+  }
+
+  .results-container {
+    width: 100vw !important;
+    height: 73vw !important;
+    margin-top: 12vw !important;
+  }
+
+  .location-image {
+    width: 30vw !important;
+  }
+
+  .location {
+    background-color: white;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border: black solid 0.25vw;
+
+    &-text {
+      margin-left: 3vw !important;
+
+      & > * {
+        margin: 1vw 0;
+      }
+
+      &-name {
+        font-size: 4vw !important;
+      }
+      &-rating {
+        font-size: 3vw !important;
+      }
+      &-address {
+        font-size: 3vw !important;
+      }
+      &-hours {
+        font-size: 3vw !important;
+      }
+      &-website {
+        font-size: 3vw !important;
+      }
+    }
+  }
 }
