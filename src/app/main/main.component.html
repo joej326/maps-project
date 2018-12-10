@@ -21,8 +21,12 @@
 
     <div class="results-container">
       <p
-        *ngIf="!filteredPlacesByLateHours.length"
+        *ngIf="!filteredPlacesByLateHours.length && !alertActive"
         class="loading">Loading Results...
+      </p>
+      <p
+        *ngIf="alertActive"
+        class="loading">No Results Found.
       </p>
       <ng-container *ngIf="filteredPlacesByLateHours.length">
           <div class="location" *ngFor="let location of filteredPlacesByLateHours; let i = index" >
