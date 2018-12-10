@@ -22,6 +22,8 @@ body {
 }
 
 @media (max-width: 800px) {
+
+
   .search-container {
     margin-top: 3vw !important;
   }
@@ -34,6 +36,31 @@ body {
     width: 60vw !important;
     margin-top: 30% !important;
   }
+
+
+  &-query-buttons {
+    transform: translateY(50%);
+    margin-left: 2vw;
+
+    & p {
+      display: inline-block;
+      background-color: rgb(238, 43, 238);
+      font-size: 1.5vw;
+      padding: 0.5vw;
+      border-radius: 1rem;
+      // margin: 0.5vw;
+      margin-left: 0.5vw;
+      margin-right: 0.5vw;
+
+      &:hover {
+        background-color: blue;
+        color: white;
+        cursor: pointer;
+      }
+    }
+  }
+
+
   .map-and-results-container {
     display: unset !important;
     position: relative;
