@@ -37,7 +37,10 @@
         class="loading">No Results Found.
       </p>
       <ng-container *ngIf="filteredPlacesByLateHours.length">
-          <div class="location" *ngFor="let location of filteredPlacesByLateHours; let i = index" >
+          <div [style.backgroundColor]="currentResultClickedPlaceId === location.place_id ? 'yellow' : 'white'"
+           (click)="selectResult(location.place_id)"
+           class="location location-{{location.place_id}}"
+           *ngFor="let location of filteredPlacesByLateHours; let i = index" >
               <div class="location-text">
                   <p class="location-text-name">{{ location.name }}</p>
                   <p class="location-text-rating">Rating: {{ location.rating }}</p>
@@ -57,7 +60,7 @@
                       './../../assets/images/coffee-icon.png'"
                     alt="location image">
               </div>
-            </div>
+          </div>
       </ng-container>
 
     </div>

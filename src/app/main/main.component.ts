@@ -6,9 +6,11 @@ import {
   ElementRef,
   AfterContentInit,
   Renderer2,
-  Input
+  Input,
+  Inject
 } from '@angular/core';
 import { RetrievePlaceDetailsService } from '../retrieve-place-details.service';
+import { DOCUMENT } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-main',
@@ -31,6 +33,7 @@ export class MainComponent implements OnInit, AfterContentInit {
   inputElemValue: string;
   timeout: boolean;
   timeForMarkerGenerator = 100;
+  currentResultClickedPlaceId: string;
 
   callbackForLocationData = (results, status) => {
     console.log('results:', results);
@@ -55,7 +58,8 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   constructor(
     private retrievePlaceDetailsService: RetrievePlaceDetailsService,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    @Inject( DOCUMENT ) private document: Document
   ) {}
 
   ngOnInit() {}
@@ -184,6 +188,17 @@ export class MainComponent implements OnInit, AfterContentInit {
                 title: `${place.name} | ${place.formatted_address}`,
                 animation: google.maps.Animation.DROP
               });
+              const defaultIcon = marker.getIcon();
+              marker.addListener('click', () => {
+
+                this.currentResultClickedPlaceId = marker['place'].placeId;
+                marker.setAnimation(google.maps.Animation.BOUNCE);
+                this.selectResult(this.currentResultClickedPlaceId);
+
+                setTimeout(() => {
+                  marker.setAnimation(null);
+                }, 1000);
+              });
             }, this.timeForMarkerGenerator += 100);
 
         }
@@ -212,5 +227,14 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.query = query;
 
     this.fetchNewLocationData(null, null, query);
+  }
+
+  selectResult(placeId) {
+    this.currentResultClickedPlaceId = placeId;
+
+    const selectedPlace = this.document.querySelector(`.location-${placeId}`);
+
+    selectedPlace.scrollIntoView({behavior: 'smooth'});
+    console.log('selectedPlace', selectedPlace);
   }
 }
