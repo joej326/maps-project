@@ -27,6 +27,8 @@ export class MainComponent implements OnInit, AfterContentInit {
   openHours = [];
   filteredPlacesByLateHours = [];
   alertActive = false;
+  query = 'lounge';
+  inputElemValue: string;
 
   callbackForLocationData = (results, status) => {
     console.log('results:', results);
@@ -63,16 +65,18 @@ export class MainComponent implements OnInit, AfterContentInit {
   }
 
 
-  fetchNewLocationData(inputElem, enterPressed?) {
+  fetchNewLocationData(inputElem, enterPressed?, query?: string) {
+    console.log('fetchenewdatalocaiton called');
     this.alertActive = false;
     this.filteredPlacesByLateHours = [];
-    // this.locationResultsData = [];
+    this.locationResultsData = [];
 
     // ensures only one search is performed
-    if (enterPressed) {
+    if (enterPressed && inputElem) {
       inputElem.blur();
     } else {
-      const address = inputElem.value;
+      const address = inputElem ? inputElem.value : this.inputElemValue;
+      this.inputElemValue = address;
       if (address) {
         const placeData = this.retrievePlaceDetailsService
           .getPlaceDetails(address)
@@ -90,38 +94,40 @@ export class MainComponent implements OnInit, AfterContentInit {
               );
 
               // made into array to map through - potentially to utilize multiple query searches
-              const queriesForLocation = ['coffee', 'lounge', 'cafe'];
+              const queryForLocation = query ? query : this.query;
 
-              queriesForLocation.map(
-                (query) => {
-                  console.log(query);
-                  const placeRequest = {
-                    location: locationCenter,
-                    radius: '800',
-                    // type: ['cafe'],
-                    query: query
-                  };
+              const placeRequest = {
+                location: locationCenter,
+                radius: '800',
+                // type: ['cafe'],
+                query: queryForLocation
+              };
 
-                  this.service = new google.maps.places.PlacesService(this.googleMap);
-                    const locationData = this.service.textSearch(
-                      placeRequest,
-                      this.callbackForLocationData
-                    );
+              this.service = new google.maps.places.PlacesService(this.googleMap);
+                const locationData = this.service.textSearch(
+                  placeRequest,
+                  this.callbackForLocationData
+                );
 
-                }
-              );
 
             } else if (!data['results'].length) {
               this.alertActive = true;
               alert('Not a valid search, no data found.');
             }
           },
+          () => {},
+          // to wake up the API
+          () => {
+            setTimeout(() => {
+              this.mainMap.nativeElement.click();
+            }, 2000);
+          }
           );
       }
     }
     // this block added in an attempt to add results from ALL queries.
     // Need to see if kava place is showing up in results but not rendering always
-    // setTimeout(() => {
+    // setInterval(() => {
     //   this.getDetailsOfPlaces(this.locationResultsData);
     // }, 5000);
   }
@@ -129,8 +135,8 @@ export class MainComponent implements OnInit, AfterContentInit {
   getDetailsOfPlaces(locationResultsData) {
     console.log('getDetailsOfPlaces');
     const daysOfTheWeek = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-    // const currentDayOfTheWeek = daysOfTheWeek[new Date().getDay()];
-    const currentDayOfTheWeek = 'Friday';
+    const currentDayOfTheWeek = daysOfTheWeek[new Date().getDay()];
+    // const currentDayOfTheWeek = 'Friday';
     // this.filteredPlacesByLateHours = [];
 
     const callback = (place, status) => {
@@ -174,6 +180,8 @@ export class MainComponent implements OnInit, AfterContentInit {
         }
 
         console.log('closing time:', matchedClosingTime);
+      } else {
+        console.log(`status: ${status}`);
       }
       console.log('filtered array:' , this.filteredPlacesByLateHours);
     };
@@ -192,5 +200,11 @@ export class MainComponent implements OnInit, AfterContentInit {
         this.service.getDetails(detailsRequest, callback);
       }
     );
+  }
+
+  setQuery(query: string) {
+    this.query = query;
+
+    this.fetchNewLocationData(null, null, query);
   }
 }

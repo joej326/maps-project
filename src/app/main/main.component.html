@@ -14,6 +14,12 @@
 
   <div class="div"><p class="search">Search</p></div>
 
+  <div class="search-container-query-buttons">
+    <p (click)="setQuery('lounge')" [ngClass]="{'query-active': query === 'lounge'}">Lounge</p>
+    <p (click)="setQuery('coffee')" [ngClass]="{'query-active': query === 'coffee'}">Coffee</p>
+    <p (click)="setQuery('cafe')" [ngClass]="{'query-active': query === 'cafe'}">Café</p>
+  </div>
+
 </div>
 
 <div class="map-and-results-container">

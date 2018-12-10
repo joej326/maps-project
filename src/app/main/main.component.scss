@@ -43,6 +43,32 @@
       background-color: blue;
     }
   }
+
+  &-query-buttons {
+    transform: translateY(50%);
+    margin-left: 5vw;
+
+    & p {
+      display: inline-block;
+      background-color: rgb(238, 43, 238);
+      font-size: 1.5vw;
+      padding: 0.5vw;
+      border-radius: 1rem;
+      // margin: 0.5vw;
+      margin-left: 0.5vw;
+      margin-right: 0.5vw;
+
+      &:hover {
+        background-color: blue;
+        color: white;
+        cursor: pointer;
+      }
+    }
+  }
+}
+.query-active {
+  background: rgba(0, 0, 255, 0.938) !important;
+  color: white;
 }
 
 .main-map {
@@ -100,6 +126,8 @@
 
     &-image {
       width: 10vw;
+      // padding: 0.5vw;
+
     }
   }
 }
