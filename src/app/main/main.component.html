@@ -1,7 +1,7 @@
 
 
 <div class="search-container">
-  <div>
+  <div class="search-container-input-parent">
       <input
       #locationSearchElem
       (keyup.enter)="fetchNewLocationData(locationSearchElem, true)"
@@ -11,8 +11,7 @@
       type="text">
   </div>
 
-
-  <div class="div"><p class="search">Search</p></div>
+  <div class="search second-search"><p>Search</p></div>
 
   <div class="search-container-query-buttons">
     <p (click)="setQuery('lounge')" [ngClass]="{'query-active': query === 'lounge'}">Lounge</p>
@@ -43,12 +42,19 @@
            *ngFor="let location of filteredPlacesByLateHours; let i = index" >
               <div class="location-text">
                   <p class="location-text-name">{{ location.name }}</p>
-                  <p class="location-text-rating">Rating: {{ location.rating }}</p>
                   <p class="location-text-address">{{ location.formatted_address }}</p>
+                  <p class="location-text-rating">Rating: {{ location.rating }}</p>
                   <a *ngIf="location.website" target="_blank" href="{{ location.website }}">
-                    <p class="location-text-website">Visit Website</p>
+                      <p class="location-text-website">Visit Website</p>
                   </a>
                   <p *ngIf="!location.website" class="location-text-website">No Website Found</p>
+                  <p
+                    class="location-text-hours"
+                    >Open Today Until: {{ hoursTheLocationsClose[location.place_id] }}
+                  </p>
+                  <a *ngIf="location.url" target="_blank" href="{{ location.url }}">
+                      <p class="location-text-google-url">Open in Google Maps</p>
+                  </a>
                   <!-- <p class="location-text-hours">Hours: </p> -->
                   <!-- <p *ngFor="let daysHours of location.opening_hours.weekday_text">{{ daysHours }}</p> -->
               </div>

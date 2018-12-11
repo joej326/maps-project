@@ -25,7 +25,8 @@ export class MainComponent implements OnInit, AfterContentInit {
   googleMap: google.maps.Map;
   service;
   locationResultsData = [];
-  locationPhotoUrlsAndIds = {};
+  locationPhotoUrlsAndIds = {}; // place id as the key, photo url as the value
+  hoursTheLocationsClose = {}; // locationId as the key, hours places closes as value
   openHours = [];
   filteredPlacesByLateHours = [];
   alertActive = false;
@@ -94,7 +95,7 @@ export class MainComponent implements OnInit, AfterContentInit {
                 this.mainMap.nativeElement,
                 {
                   center: locationCenter,
-                  zoom: 10
+                  zoom: 13
                 }
               );
 
@@ -127,11 +128,12 @@ export class MainComponent implements OnInit, AfterContentInit {
               this.mainMap.nativeElement.click();
             }, 2000);
 
-            setTimeout(() => {
-              if (!this.filteredPlacesByLateHours.length) {
-                this.timeout = true;
-              }
-            }, 10000);
+            // potential bug if the user happens to be making a new search at 10 sec, this will show up
+            // setTimeout(() => {
+            //   if (!this.filteredPlacesByLateHours.length) {
+            //     this.timeout = true;
+            //   }
+            // }, 10000);
           }
           );
       }
@@ -150,6 +152,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     // this.filteredPlacesByLateHours = [];
 
     const callback = (place, status) => {
+      console.log('place:', place);
       let createMarker = false;
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         // const weeksHours = <Array<string>> place.opening_hours.weeday_text;
@@ -166,10 +169,12 @@ export class MainComponent implements OnInit, AfterContentInit {
         matchedClosingTime = matchedClosingTime ? matchedClosingTime[0] : matchedClosingTime;
 
         if (matchedClosingTime && matchedClosingTime.includes('hours')) {
+          this.hoursTheLocationsClose[place.place_id] = todaysHoursString;
           this.filteredPlacesByLateHours.push(place);
           createMarker = true;
         } else if (matchedClosingTime) {
           matchedClosingTime = matchedClosingTime.slice(2, matchedClosingTime.length);
+          this.hoursTheLocationsClose[place.place_id] = matchedClosingTime;
           this.filteredPlacesByLateHours.push(place);
           createMarker = true;
         }
@@ -215,7 +220,7 @@ export class MainComponent implements OnInit, AfterContentInit {
 
         const detailsRequest = {
           placeId,
-          fields: ['name', 'rating', 'price_level', 'website', 'opening_hours', 'place_id', 'geometry', 'id', 'formatted_address', 'types']
+          fields: ['name', 'rating', 'website', 'opening_hours', 'place_id', 'geometry', 'id', 'formatted_address', 'types', 'url']
         };
         // console.log('before callback sent');
         this.service.getDetails(detailsRequest, callback);

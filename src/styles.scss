@@ -26,6 +26,11 @@ body {
 
   .search-container {
     margin-top: 3vw !important;
+    display: block !important;
+
+    & > * {
+      margin-left: 5vw;
+    }
   }
 
   .lounge-locator {
@@ -37,26 +42,28 @@ body {
     margin-top: 30% !important;
   }
 
+  .search {
+    font-size: 6.5vw !important;
+  }
+  .search-input {
+    width: 56vw !important;
+    height: 8vw !important;
+  }
+  .second-search {
+    left: 0 !important;
+    margin-left: 15vw !important;
+  }
+  .search-container-input-parent {
+    display: inline-block !important;
+  }
+  .search-container-query-buttons {
+    text-align: center;
+    margin-bottom: 7vw;
 
-  &-query-buttons {
-    transform: translateY(50%);
-    margin-left: 2vw;
-
-    & p {
-      display: inline-block;
-      background-color: rgb(238, 43, 238);
-      font-size: 1.5vw;
-      padding: 0.5vw;
-      border-radius: 1rem;
-      // margin: 0.5vw;
-      margin-left: 0.5vw;
-      margin-right: 0.5vw;
-
-      &:hover {
-        background-color: blue;
-        color: white;
-        cursor: pointer;
-      }
+    & > p {
+      font-size: 5vw !important;
+      margin-left: 1.5vw !important;
+      margin-right: 1.5vw !important;
     }
   }
 
@@ -109,6 +116,9 @@ body {
         font-size: 3vw !important;
       }
       &-website {
+        font-size: 3vw !important;
+      }
+      &-google-url {
         font-size: 3vw !important;
       }
     }
