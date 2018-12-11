@@ -37,7 +37,6 @@ export class MainComponent implements OnInit, AfterContentInit {
   currentResultClickedPlaceId: string;
 
   callbackForLocationData = (results, status) => {
-    console.log('results:', results);
 
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       // concat the arrays from the multiple queries
@@ -152,7 +151,6 @@ export class MainComponent implements OnInit, AfterContentInit {
     // this.filteredPlacesByLateHours = [];
 
     const callback = (place, status) => {
-      console.log('place:', place);
       let createMarker = false;
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         // const weeksHours = <Array<string>> place.opening_hours.weeday_text;
@@ -174,7 +172,6 @@ export class MainComponent implements OnInit, AfterContentInit {
           createMarker = true;
         } else if (matchedClosingTime) {
           matchedClosingTime = matchedClosingTime.slice(2, matchedClosingTime.length);
-          console.log('matched time:', matchedClosingTime);
           if ( !(matchedClosingTime === '1:30 PM' || matchedClosingTime === '1:00 PM') ) {
             this.hoursTheLocationsClose[place.place_id] = matchedClosingTime;
             this.filteredPlacesByLateHours.push(place);
@@ -225,7 +222,6 @@ export class MainComponent implements OnInit, AfterContentInit {
           placeId,
           fields: ['name', 'rating', 'website', 'opening_hours', 'place_id', 'geometry', 'id', 'formatted_address', 'types', 'url']
         };
-        // console.log('before callback sent');
         this.service.getDetails(detailsRequest, callback);
       }
     );
@@ -243,6 +239,5 @@ export class MainComponent implements OnInit, AfterContentInit {
     const selectedPlace = this.document.querySelector(`.location-${placeId}`);
 
     selectedPlace.scrollIntoView({behavior: 'smooth'});
-    console.log('selectedPlace', selectedPlace);
   }
 }
