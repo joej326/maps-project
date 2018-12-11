@@ -174,9 +174,12 @@ export class MainComponent implements OnInit, AfterContentInit {
           createMarker = true;
         } else if (matchedClosingTime) {
           matchedClosingTime = matchedClosingTime.slice(2, matchedClosingTime.length);
-          this.hoursTheLocationsClose[place.place_id] = matchedClosingTime;
-          this.filteredPlacesByLateHours.push(place);
-          createMarker = true;
+          console.log('matched time:', matchedClosingTime);
+          if ( !(matchedClosingTime === '1:30 PM' || matchedClosingTime === '1:00 PM') ) {
+            this.hoursTheLocationsClose[place.place_id] = matchedClosingTime;
+            this.filteredPlacesByLateHours.push(place);
+            createMarker = true;
+          }
         }
 
         if (createMarker) {
