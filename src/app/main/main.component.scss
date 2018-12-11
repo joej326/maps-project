@@ -27,7 +27,7 @@
     border-radius: 1rem;
     padding: 1rem 2rem;
     transform: translateX(-50%);
-    left: 50%;
+    left: 7%;
     position: relative;
     margin-left: 1vw;
     margin-top: 2vw;
@@ -101,6 +101,10 @@
     &-text {
       margin-left: 1vw;
 
+      & > * {
+        margin: 0.25vw 0;
+      }
+
       &-name {
         font-size: 1.25vw;
         font-weight: bold;
@@ -113,11 +117,22 @@
       }
       &-hours {
         font-size: 1vw;
+        font-weight: bold;
       }
       &-website {
         font-size: 1vw;
         display: inline-block;
+        font-weight: bold;
         text-decoration: underline;
+
+        &:hover {
+          color: rgb(238, 43, 238);
+        }
+      }
+      &-google-url {
+        font-size: 1vw;
+        text-decoration: underline;
+        margin-bottom: 0.5vw;
 
         &:hover {
           color: rgb(238, 43, 238);
