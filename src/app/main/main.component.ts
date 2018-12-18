@@ -41,6 +41,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     if (status === google.maps.places.PlacesServiceStatus.OK) {
       // concat the arrays from the multiple queries
       this.locationResultsData = this.locationResultsData.concat(results);
+      console.log('results data:', this.locationResultsData);
 
       for (let i = 0; i < this.locationResultsData.length; i++) {
         if (this.locationResultsData[i].photos) {
@@ -151,6 +152,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     // this.filteredPlacesByLateHours = [];
 
     const callback = (place, status) => {
+      console.log('place:', place);
       let createMarker = false;
       if (status === google.maps.places.PlacesServiceStatus.OK) {
         // const weeksHours = <Array<string>> place.opening_hours.weeday_text;
