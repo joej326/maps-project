@@ -4,9 +4,8 @@
 <input
   #locationSearchElem
   (keyup.enter)="notifySearch(locationSearchElem)"
-  (blur)="notifySearch(locationSearchElem)"
   placeholder="Enter your location"
   class="search-input"
   type="text">
 
-  <p class="search">Search</p>
+  <p (click)="notifySearch(locationSearchElem)" class="search">Search</p>
