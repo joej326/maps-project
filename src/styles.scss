@@ -21,7 +21,7 @@ body {
   box-sizing: border-box;
 }
 
-@media (max-width: 800px) {
+@media (max-width: 800px) and (orientation: portrait) {
 
 
   .search-container {
