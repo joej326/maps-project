@@ -4,7 +4,7 @@ google.maps = google.maps || {};
 (function() {
 
   function getScript(src) {
-    // document.write('<' + 'script src="' + key + '"><' + '/script>');
+    document.write('<' + 'script src="' + src + '"><' + '/script>');
   }
 
   var modules = google.maps.modules = {};
