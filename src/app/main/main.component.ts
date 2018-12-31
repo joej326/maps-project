@@ -86,6 +86,7 @@ export class MainComponent implements OnInit, AfterContentInit {
         const placeData = this.retrievePlaceDetailsService
           .getPlaceDetails(address)
           .subscribe(data => {
+            console.log(data);
             this.timeout = false;
             if (data['results'].length) {
               const lat = data['results'][0].geometry.location.lat;
