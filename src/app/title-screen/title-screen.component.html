@@ -1,11 +1,17 @@
-<div class="late-night title"></div>
-<div class="lounge-locator title"></div>
+<div class="title-screen-main">
+  <div class="late-night title"></div>
+  <div class="lounge-locator title"></div>
 
-<input
-  #locationSearchElem
-  (keyup.enter)="notifySearch(locationSearchElem)"
-  placeholder="Enter your location"
-  class="search-input"
-  type="text">
+  <div class="search-container">
+    <input
+    #locationSearchElem
+    (keyup.enter)="notifySearch(locationSearchElem)"
+    placeholder="Enter your location"
+    class="search-input"
+    type="text"
+  />
 
   <p (click)="notifySearch(locationSearchElem)" class="search">Search</p>
+  </div>
+
+</div>

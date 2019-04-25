@@ -23,49 +23,42 @@ body {
 
 @media (max-width: 800px) and (orientation: portrait) {
 
+  .title-screen-main {
 
-  .search-container {
-    margin-top: 3vw !important;
-    display: block !important;
 
-    & > * {
-      margin-left: 5vw;
+    & .late-night {
+      width: 60vw !important;
+      height: 15vw !important;
+    }
+    & .lounge-locator {
+      width: 80vw !important;
+      height: 15vw !important;
+      transform: translateY(-3vw);
+    }
+
+
+
+    & .search-input {
+      width: 35vw !important;
+      font-size: 3vw !important;
+      height: 6vw !important;
+      margin-top: 2vw;
+      text-align: center;
+    }
+
+    & .search {
+      padding: 1rem 2rem;
+      margin-left: 1vw;
+      font-size: 4vw !important;
+      cursor: pointer;
+      text-align: center;
+      transition: all 0.5s;
+
     }
   }
 
-  .lounge-locator {
-    width: 86vw !important;
-  }
 
-  .late-night {
-    width: 60vw !important;
-    margin-top: 30% !important;
-  }
 
-  .search {
-    font-size: 6.5vw !important;
-  }
-  .search-input {
-    width: 56vw !important;
-    height: 8vw !important;
-  }
-  .second-search {
-    left: 0 !important;
-    margin-left: 15vw !important;
-  }
-  .search-container-input-parent {
-    display: inline-block !important;
-  }
-  .search-container-query-buttons {
-    text-align: center;
-    margin-bottom: 7vw;
-
-    & > p {
-      font-size: 5vw !important;
-      margin-left: 1vw !important;
-      margin-right: 1vw !important;
-    }
-  }
 
 
   .map-and-results-container {
