@@ -29,6 +29,7 @@ export class MainComponent implements OnInit, AfterContentInit {
   hoursTheLocationsClose = {}; // locationId as the key, hours places closes as value
   openHours = [];
   filteredPlacesByLateHours = [];
+  storedMarkers = [];
   alertActive = false;
   query = 'lounge';
   inputElemValue: string;
@@ -196,6 +197,7 @@ export class MainComponent implements OnInit, AfterContentInit {
                 title: `${place.name} | ${place.formatted_address}`,
                 animation: google.maps.Animation.DROP
               });
+              this.storedMarkers.push(marker);
               const defaultIcon = marker.getIcon();
               marker.addListener('click', () => {
 
@@ -228,6 +230,12 @@ export class MainComponent implements OnInit, AfterContentInit {
         this.service.getDetails(detailsRequest, callback);
       }
     );
+    setTimeout(() => {
+    console.log('THE LOG', this.filteredPlacesByLateHours);
+    console.log('THE LOG 2', this.storedMarkers);
+
+
+    }, 4000);
   }
 
   setQuery(query: string) {
@@ -238,6 +246,12 @@ export class MainComponent implements OnInit, AfterContentInit {
 
   selectResult(placeId) {
     this.currentResultClickedPlaceId = placeId;
+
+    const matchedMarker = this.storedMarkers.find((marker) => marker['place'].placeId === placeId);
+    matchedMarker.setAnimation(google.maps.Animation.BOUNCE);
+    setTimeout(() => {
+      matchedMarker.setAnimation(null);
+    }, 1000);
 
     const selectedPlace = this.document.querySelector(`.location-${placeId}`);
 
