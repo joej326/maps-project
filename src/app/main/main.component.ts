@@ -230,12 +230,6 @@ export class MainComponent implements OnInit, AfterContentInit {
         this.service.getDetails(detailsRequest, callback);
       }
     );
-    setTimeout(() => {
-    console.log('THE LOG', this.filteredPlacesByLateHours);
-    console.log('THE LOG 2', this.storedMarkers);
-
-
-    }, 4000);
   }
 
   setQuery(query: string) {
