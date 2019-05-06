@@ -76,6 +76,7 @@ export class MainComponent implements OnInit, AfterContentInit {
     this.alertActive = false;
     this.filteredPlacesByLateHours = [];
     this.locationResultsData = [];
+    this.storedMarkers = [];
 
     // ensures only one search is performed
     if (enterPressed && inputElem) {
