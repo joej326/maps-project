@@ -47,13 +47,16 @@
 
   .search-container-query-buttons {
     transform: translateY(50%);
-    margin-left: 2vw;
+    margin-left: 5vw;
+    width: 40%;
+    display: flex;
+    justify-content: space-between;
 
 
     & p {
-      display: inline-block;
+      // display: inline-block;
       background-color: rgb(238, 43, 238);
-      font-size: 1.5vw;
+      font-size: 2vw;
       padding: 0.5vw;
       border-radius: 1rem;
       // margin: 0.5vw;
