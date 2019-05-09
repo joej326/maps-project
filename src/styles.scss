@@ -117,3 +117,21 @@ body {
     }
   }
 }
+
+
+// style both inputs
+
+input {
+  outline: none;
+  padding: 3px 0px 3px 3px;
+  margin: 5px 1px 3px 0px;
+  border: 1px solid #DDDDDD;
+  border-radius: 0.5vw;
+
+  &:focus {
+    box-shadow: 0 0 1vw rgba(81, 203, 238, 1);
+    padding: 3px 0px 3px 3px;
+    margin: 0.5vw 1px 3px 0px;
+    border: 1px solid rgba(81, 203, 238, 1);
+  }
+}
