@@ -36,7 +36,7 @@
         class="loading">No Results Found.
       </p>
       <ng-container *ngIf="filteredPlacesByLateHours.length">
-          <div [style.backgroundColor]="currentResultClickedPlaceId === location.place_id ? '#efe147' : 'white'"
+          <div [style.backgroundColor]="currentResultClickedPlaceId === location.place_id ? '#b3d9ff' : 'white'"
            (click)="selectResult(location.place_id)"
            class="location location-{{location.place_id}}"
            *ngFor="let location of filteredPlacesByLateHours; let i = index" >
