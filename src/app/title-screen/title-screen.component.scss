@@ -29,7 +29,7 @@
   .search-container {
     display: flex;
     justify-content: space-around;
-    align-items: flex-end;
+    align-items: baseline;
     transform: translateY(-3vw);
 
 
@@ -53,6 +53,7 @@
       // left: 50%;
       position: relative;
       margin-left: 1vw;
+      // margin-top: 1vw;
       text-decoration: none;
       background: rgb(238, 43, 238);
       color: #ffffff;
